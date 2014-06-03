@@ -1,9 +1,6 @@
 buildscript {
-    repositories {
-        mavenCentral()
-    }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath androidGradlePlugin
     }
 }
 
@@ -15,7 +12,7 @@ apply plugin: 'android-library'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19"
+    buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
         minSdkVersion 10
@@ -32,7 +29,7 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:19.0.1'
-    compile 'com.android.support:mediarouter-v7:19.0.1'
+    compile 'com.android.support:appcompat-v7:19.1.0'
+    compile 'com.android.support:mediarouter-v7:19.1.0'
     compile 'com.google.android.gms:play-services:+'
 }
