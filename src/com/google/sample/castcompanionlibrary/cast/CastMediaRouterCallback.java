@@ -102,4 +102,8 @@ public class CastMediaRouterCallback extends MediaRouter.Callback {
         }
     }
 
+    public int getRouteCount() {
+        return mRouteCount;
+    }
+
 }

@@ -1404,6 +1404,22 @@ public class VideoCastManager extends BaseCastManager
         return mIdleReason;
     }
 
+    /**
+     * MOD:
+     * CastMediaRouterCallback calculates count of routes.
+     * And this method was intended to determine visibility of CastButton
+     *
+     * The reason of adding this method is in current iHeartRadio action bar menu
+     * implementation which suppose full redrawing on each open/close of drawer.
+     * So, this method is just workaround
+     * which allows to access to count of currently available devices
+     * to determine visibility of chromecast button.
+     * @return
+     */
+    public int getRouteCount() {
+        return mMediaRouterCallback.getRouteCount();
+    }
+
     /*============================================================================================*/
     /*========== DataChannel callbacks and methods ===============================================*/
     /*============================================================================================*/
