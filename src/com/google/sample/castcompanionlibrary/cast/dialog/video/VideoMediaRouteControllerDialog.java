@@ -154,8 +154,8 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         mStreamType = info.getStreamType();
         hideControls(false, 0);
         MediaMetadata mm = info.getMetadata();
-        mTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
-        mSubTitle.setText(mm.getString(MediaMetadata.KEY_SUBTITLE));
+        mTitle.setText(mm.getString(MediaMetadata.KEY_ARTIST));
+        mSubTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
         setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : null);
     }
 
