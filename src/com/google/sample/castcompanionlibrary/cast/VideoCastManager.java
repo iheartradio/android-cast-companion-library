@@ -1310,6 +1310,33 @@ public class VideoCastManager extends BaseCastManager
         }
     }
 
+    @Override
+    public void addFeatures(int capabilities) {
+        boolean wasLockScreenEnabled = isFeatureEnabled(FEATURE_LOCKSCREEN);
+        boolean wasNotificationEnabled = isFeatureEnabled(FEATURE_NOTIFICATION);
+        super.addFeatures(capabilities);
+        boolean isLockScreenNowEnabled = isFeatureEnabled(FEATURE_LOCKSCREEN);
+        boolean isNotificationNowEnabled = isFeatureEnabled(FEATURE_NOTIFICATION);
+        if(!wasLockScreenEnabled && isLockScreenNowEnabled) {
+            updateRemoteControl(true);
+        }
+        if(!wasNotificationEnabled && isNotificationNowEnabled) {
+            startNotificationService();
+        }
+    }
+
+    @Override
+    public void removeFeatures(int capabilities) {
+        if((capabilities & FEATURE_NOTIFICATION) > 0) {
+            stopNotificationService();
+        }
+
+        if((capabilities & FEATURE_LOCKSCREEN) > 0) {
+            removeRemoteControlClient();
+        }
+        super.removeFeatures(capabilities);
+    }
+
     private void attachMediaChannel() throws TransientNetworkDisconnectionException,
             NoConnectionException {
         LOGD(TAG, "attachMedia()");

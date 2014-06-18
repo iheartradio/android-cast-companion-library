@@ -16,9 +16,6 @@
 
 package com.google.sample.castcompanionlibrary.cast;
 
-import static com.google.sample.castcompanionlibrary.utils.LogUtils.LOGD;
-import static com.google.sample.castcompanionlibrary.utils.LogUtils.LOGE;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -64,6 +61,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import static com.google.sample.castcompanionlibrary.utils.LogUtils.LOGD;
+import static com.google.sample.castcompanionlibrary.utils.LogUtils.LOGE;
 
 /**
  * An abstract class that manages connectivity to a cast device. Subclasses are expected to extend
@@ -521,8 +521,12 @@ public void onCastAvailabilityChanged(boolean castPresent) {
      *
      * @param capabilities
      */
-    public void enableFeatures(int capabilities) {
-        mCapabilities = capabilities;
+    public void addFeatures(int capabilities) {
+        mCapabilities |= capabilities;
+    }
+
+    public void removeFeatures(int capabilities) {
+        mCapabilities &= ~capabilities;
     }
 
     /*
