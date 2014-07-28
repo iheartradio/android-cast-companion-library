@@ -143,22 +143,6 @@ public class MiniController extends RelativeLayout implements IMiniController {
             }
         });
 
-        mContainer.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if (null != mListener) {
-                    setLoadingVisibility(false);
-                    try {
-                        mListener.onTargetActivityInvoked(mIcon.getContext());
-                    } catch (Exception e) {
-                        mListener.onFailed(R.string.failed_perform_action, -1);
-                    }
-                }
-
-            }
-        });
     }
 
     /**

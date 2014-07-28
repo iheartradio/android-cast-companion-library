@@ -318,25 +318,6 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
             }
         });
 
-        mIcon.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                if (null != mCastManager
-                        && null != mCastManager.getTargetActivity()) {
-                    try {
-                        mCastManager.onTargetActivityInvoked(mContext);
-                    } catch (TransientNetworkDisconnectionException e) {
-                        LOGE(TAG, "Failed to start the target activity due to network issues", e);
-                    } catch (NoConnectionException e) {
-                        LOGE(TAG, "Failed to start the target activity due to network issues", e);
-                    }
-                    cancel();
-                }
-
-            }
-        });
     }
 
     private void loadViews(View controls) {
