@@ -1740,7 +1740,7 @@ public class VideoCastManager extends BaseCastManager
                     try {
                         Bitmap bm = getBitmapForLockScreen(info);
                         if(bm == null) {
-                            onImageLoadFInish();
+                            onFinish();
                             return;
                         }
                         mRemoteControlClientCompat.editMetadata(false).putBitmap(
@@ -1750,12 +1750,12 @@ public class VideoCastManager extends BaseCastManager
                     } catch (Exception e) {
                         LOGD(TAG, "Failed to update lock screen image", e);
                     } finally {
-                        onImageLoadFInish();
+                        onFinish();
                     }
 
                 }
 
-                private void onImageLoadFInish() {
+                private void onFinish() {
                     mIsLockScreenImageRequestPending = false;
                     if(mPendingLockScreenImageRequest != null) {
                         updateLockScreenImage(mPendingLockScreenImageRequest);
