@@ -154,6 +154,8 @@ public class VideoCastManager extends BaseCastManager
     private Set<IVideoCastConsumer> mVideoConsumers;
     private IMediaAuthService mAuthService;
     private Handler mHandler;
+    private MediaInfo mPendingLockScreenImageRequest;
+    private boolean mIsLockScreenImageRequestPending;
 
     /**
      * Initializes the VideoCastManager for clients. Before clients can use VideoCastManager, they
@@ -1719,31 +1721,53 @@ public class VideoCastManager extends BaseCastManager
     /*
      * Updates lock screen image
      */
+
     private void updateLockScreenImage(final MediaInfo info) {
         if (null == info) {
             return;
         }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if (null == mRemoteControlClientCompat) {
-                    return;
-                }
-                try {
-                    Bitmap bm = getBitmapForLockScreen(info);
-                    if (null == bm) {
+
+        if(mIsLockScreenImageRequestPending) {
+            mPendingLockScreenImageRequest = info;
+        } else {
+            mIsLockScreenImageRequestPending = true;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (null == mRemoteControlClientCompat) {
                         return;
                     }
-                    mRemoteControlClientCompat.editMetadata(false).putBitmap(
-                            RemoteControlClientCompat.MetadataEditorCompat.
-                                    METADATA_KEY_ARTWORK, bm
-                    ).apply();
-                } catch (Exception e) {
-                    LOGD(TAG, "Failed to update lock screen image", e);
+                    try {
+                        Bitmap bm = getBitmapForLockScreen(info);
+                        if(bm == null) {
+                            onImageLoadFInish();
+                            return;
+                        }
+                        mRemoteControlClientCompat.editMetadata(false).putBitmap(
+                                RemoteControlClientCompat.MetadataEditorCompat.
+                                        METADATA_KEY_ARTWORK, bm
+                        ).apply();
+                    } catch (Exception e) {
+                        LOGD(TAG, "Failed to update lock screen image", e);
+                    } finally {
+                        onImageLoadFInish();
+                    }
+
                 }
-            }
-        }).start();
+
+                private void onImageLoadFInish() {
+                    mIsLockScreenImageRequestPending = false;
+                    if(mPendingLockScreenImageRequest != null) {
+                        updateLockScreenImage(mPendingLockScreenImageRequest);
+                        mPendingLockScreenImageRequest = null;
+                    }
+                }
+            }).start();
+        }
+
     }
+
+
 
     /*
      * Returns the {@link Bitmap} appropriate for the right size image for lock screen. In ICS and
