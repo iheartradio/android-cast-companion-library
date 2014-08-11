@@ -240,11 +240,7 @@ public abstract class BaseCastManager implements DeviceSelectionListener, Connec
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onCastAvailabilityChanged(castPresent);
-                    } catch (Exception e) {
-                        LOGE(TAG, "onCastAvailabilityChanged(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onCastAvailabilityChanged(castPresent);
                 }
             }
         }
@@ -306,11 +302,7 @@ public abstract class BaseCastManager implements DeviceSelectionListener, Connec
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onCastDeviceDetected(info);
-                    } catch (Exception e) {
-                        LOGE(TAG, "onCastDeviceDetected(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onCastDeviceDetected(info);
                 }
             }
         }
@@ -895,11 +887,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onConnectivityRecovered();
-                    } catch (Exception e) {
-                        LOGE(TAG, "onConnectivityRecovered: Failed to inform " + consumer, e);
-                    }
+                    consumer.onConnectivityRecovered();
                 }
             }
         }
@@ -937,11 +925,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
             if (null != mBaseCastConsumers) {
                 synchronized (mBaseCastConsumers) {
                     for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                        try {
-                            consumer.onConnected();
-                        } catch (Exception e) {
-                            LOGE(TAG, "onConnected: Failed to inform " + consumer, e);
-                        }
+                        consumer.onConnected();
                     }
                 }
             }
@@ -968,11 +952,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onDisconnected();
-                    } catch (Exception e) {
-                        LOGE(TAG, "onDisconnected(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onDisconnected();
                 }
             }
         }
@@ -996,11 +976,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onConnectionFailed(result);
-                    } catch (Exception e) {
-                        LOGE(TAG, "onConnectionFailed(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onConnectionFailed(result);
                 }
             }
         }
@@ -1016,11 +992,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onConnectionSuspended(cause);
-                    } catch (Exception e) {
-                        LOGE(TAG, "onConnectionSuspended(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onConnectionSuspended(cause);
                 }
             }
         }
@@ -1167,11 +1139,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
         if (null != mBaseCastConsumers) {
             synchronized (mBaseCastConsumers) {
                 for (IBaseCastConsumer consumer : mBaseCastConsumers) {
-                    try {
-                        consumer.onFailed(resourceId, statusCode);
-                    } catch (Exception e) {
-                        LOGE(TAG, "onFailed(): Failed to inform " + consumer, e);
-                    }
+                    consumer.onFailed(resourceId, statusCode);
                 }
             }
         }
