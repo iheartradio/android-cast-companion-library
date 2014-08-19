@@ -28,7 +28,7 @@ public class VideoCastConsumerImpl extends BaseCastConsumerImpl
 
     @Override
     public void onApplicationConnected(ApplicationMetadata appMetadata,
-            String sessionId, boolean wasLaunched) {
+            String sessionId, boolean wasLaunched, boolean firstConnection) {
     }
 
     @Override

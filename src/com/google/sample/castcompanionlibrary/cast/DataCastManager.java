@@ -316,7 +316,7 @@ public class DataCastManager extends BaseCastManager
 
     @Override
     public void onApplicationConnected(ApplicationMetadata appMetadata, String applicationStatus,
-            String sessionId, boolean wasLaunched) {
+            String sessionId, boolean wasLaunched, boolean firstConnection) {
         LOGD(TAG, "onApplicationConnected() reached with sessionId: " + sessionId);
 
         // saving session for future retrieval; we only save the last session

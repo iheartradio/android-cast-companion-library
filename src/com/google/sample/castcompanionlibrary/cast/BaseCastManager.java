@@ -157,7 +157,7 @@ public abstract class BaseCastManager implements DeviceSelectionListener, Connec
      * @param wasLaunched
      */
     abstract void onApplicationConnected(ApplicationMetadata applicationMetadata,
-            String applicationStatus, String sessionId, boolean wasLaunched);
+            String applicationStatus, String sessionId, boolean wasLaunched, boolean firstConnection);
 
     /**
      * Called when the launch of application has failed. Subclasses need to handle this by doing
@@ -1053,7 +1053,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
                                 LOGD(TAG, "joinApplication() -> success");
                                 onApplicationConnected(result.getApplicationMetadata(),
                                         result.getApplicationStatus(), result.getSessionId(),
-                                        result.getWasLaunched());
+                                        result.getWasLaunched(), false);
                             } else {
                                 LOGD(TAG, "joinApplication() -> failure");
                                 onApplicationConnectionFailed(result.getStatus().getStatusCode());
@@ -1072,7 +1072,7 @@ public void onCastAvailabilityChanged(boolean castPresent) {
                                 LOGD(TAG, "launchApplication() -> success result");
                                 onApplicationConnected(result.getApplicationMetadata(),
                                         result.getApplicationStatus(), result.getSessionId(),
-                                        result.getWasLaunched());
+                                        result.getWasLaunched(), true);
                             } else {
                                 LOGD(TAG, "launchApplication() -> failure result");
                                 onApplicationConnectionFailed(result.getStatus().getStatusCode());

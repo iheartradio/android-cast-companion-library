@@ -896,7 +896,7 @@ public class VideoCastManager extends BaseCastManager
 
     @Override
     void onApplicationConnected(ApplicationMetadata appMetadata,
-            String applicationStatus, String sessionId, boolean wasLaunched) {
+            String applicationStatus, String sessionId, boolean wasLaunched, boolean firstConnection) {
         LOGD(TAG, "onApplicationConnected() reached with sessionId: " + sessionId
                 + ", and mReconnectionStatus=" + mReconnectionStatus);
 
@@ -939,7 +939,7 @@ public class VideoCastManager extends BaseCastManager
             synchronized (mVideoConsumers) {
                 for (IVideoCastConsumer consumer : mVideoConsumers) {
                     try {
-                        consumer.onApplicationConnected(appMetadata, mSessionId, wasLaunched);
+                        consumer.onApplicationConnected(appMetadata, mSessionId, wasLaunched, firstConnection);
                     } catch (Exception e) {
                         LOGE(TAG, "onApplicationConnected(): Failed to inform " + consumer, e);
                     }
