@@ -21,5 +21,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.android.support:mediarouter-v7:19.1.0'
-    compile 'com.google.android.gms:play-services:+'
+    compile 'com.google.android.gms:play-services:5.0.89'
 }
