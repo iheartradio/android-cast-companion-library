@@ -32,7 +32,7 @@ public interface IVideoCastConsumer extends IBaseCastConsumer {
      * @param wasLaunched
      */
     public void onApplicationConnected(ApplicationMetadata appMetadata,
-            String sessionId, boolean wasLaunched);
+            String sessionId, boolean wasLaunched, boolean firstConnection);
 
     /**
      * Called when an application launch has failed. Failure reason is captured in the
