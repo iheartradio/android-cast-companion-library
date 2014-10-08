@@ -1840,9 +1840,9 @@ public class VideoCastManager extends BaseCastManager
             mRemoteControlClientCompat.editMetadata(false)
                     .putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
                             mm.getString(MediaMetadata.KEY_TITLE))
-                    .putString(MediaMetadataRetriever.METADATA_KEY_ALBUMARTIST,
-                            mContext.getResources().getString(
-                                    R.string.casting_to_device, getDeviceName()))
+                    .putString(MediaMetadataRetriever.METADATA_KEY_ARTIST, mm.getString(MediaMetadata.KEY_ARTIST))
+                    .putString(MediaMetadataRetriever.METADATA_KEY_ALBUMARTIST, mm.getString(MediaMetadata.KEY_ARTIST))
+                    .putString(MediaMetadataRetriever.METADATA_KEY_ALBUM, mm.getString(MediaMetadata.KEY_ALBUM_TITLE))
                     .putLong(MediaMetadataRetriever.METADATA_KEY_DURATION,
                             info.getStreamDuration())
                     .apply();
