@@ -1,12 +1,98 @@
+androidGradlePlugin         = 'com.android.tools.build:gradle:0.12.+'
+androidSdkManager           = 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+androidBuildToolsVersion    = '20.0.0'
+
+apply plugin: 'idea'
+
+project.buildDir = 'gradle-build'
+
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
+buildscript {
+    repositories {
+        mavenLocal()
+        jcenter()
+        maven {
+            name "android-m2"
+            url "file://$System.env.ANDROID_HOME/extras/android/m2repository"
+        }
+        maven {
+            name "google-m2"
+            url "file://$System.env.ANDROID_HOME/extras/google/m2repository"
+        }
+        'iHeart\'s repo for external libs and 3rd party mirrors'
+        maven {
+            name "iheartExternals"
+            url ihrExternalsRepo
+            credentials {
+                username artifactoryUsername
+                password artifactoryPassword
+            }
+        }
+        maven { url 'http://download.crashlytics.com/maven' }
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+        classpath 'de.felixschulze.gradle:gradle-hockeyapp-plugin:+'
+        classpath 'org.ajoberstar:gradle-git:0.9.0'
+        classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    }
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+    maven {
+        name "android-m2"
+        url "file://$System.env.ANDROID_HOME/extras/android/m2repository"
+    }
+    maven {
+        name "google-m2"
+        url "file://$System.env.ANDROID_HOME/extras/google/m2repository"
+    }
+    'iHeart\'s repo for external libs and 3rd party mirrors'
+    maven {
+        name "iheartExternals"
+        url ihrExternalsRepo
+        credentials {
+            username artifactoryUsername
+            password artifactoryPassword
+        }
+    }
+    'iHeart\'s repo for internal libs, like IHRCP and Commons'
+    maven {
+        name "iheartInternal"
+        url ihrInternalRepo
+        credentials {
+            username artifactoryUsername
+            password artifactoryPassword
+        }
+    }
+}
+
 apply plugin: 'android-library'
+apply plugin: 'maven-publish'
+
+project.buildDir = 'gradle-build'
+
+group 'com.google'
+version '1.5.0.ihr'
 
 android {
-    compileSdkVersion 19
+    compileSdkVersion 20
     buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 10
-        targetSdkVersion 19
+        minSdkVersion 14
+        targetSdkVersion 20
+        versionCode 1
+        versionName version
     }
 
     sourceSets {
@@ -22,4 +108,52 @@ dependencies {
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.android.support:mediarouter-v7:19.1.0'
     compile 'com.google.android.gms:play-services:5.0.89'
+}
+
+task sourceJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+}
+
+publishing {
+    publications {
+        release(MavenPublication) {
+            artifact "${project.buildDir}/outputs/aar/${project.name}-${project.version}.aar"
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+
+                configurations.compile.allDependencies.each {
+                    def dependencyNode = dependenciesNode.appendNode('dependency')
+                    dependencyNode.appendNode('groupId', it.group)
+                    dependencyNode.appendNode('artifactId', it.name)
+                    dependencyNode.appendNode('version', it.version)
+                }
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url ihrExternalRepo
+            credentials {
+                username artifactoryUsername
+                password artifactoryPassword
+            }
+        }
+    }
+}
+
+project.afterEvaluate {
+    publishing.publications.all { publication ->
+        final String publishTaskName = String.format("publish%sPublicationToMavenLocal", publication.name.capitalize());
+        final String assembleTaskName = String.format("assemble%s", publication.name.capitalize());
+
+        // Add dependency between publish task and assemble task for each publication
+        Task publishTask = project.tasks.getByName(publishTaskName)
+        publishTask.dependsOn project.tasks.getByName(assembleTaskName)
+    }
 }
