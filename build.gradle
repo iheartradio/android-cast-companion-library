@@ -82,7 +82,7 @@ apply plugin: 'maven-publish'
 project.buildDir = 'gradle-build'
 
 group 'com.google'
-version '1.5.0.ihr'
+version '1.5.1.ihr'
 
 android {
     compileSdkVersion 20
@@ -107,7 +107,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:19.1.0'
     compile 'com.android.support:mediarouter-v7:19.1.0'
-    compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.google.android.gms:play-services-cast:6.5+'
 }
 
 task sourceJar(type: Jar) {
