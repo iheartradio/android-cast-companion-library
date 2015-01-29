@@ -119,7 +119,7 @@ task sourceJar(type: Jar) {
 publishing {
     publications {
         release(MavenPublication) {
-            artifact "${project.buildDir}/outputs/aar/${project.name}-${project.version}.aar"
+            artifact "${project.buildDir}/outputs/aar/${project.name}-release.aar"
 
             artifact sourceJar {
                 classifier "sources"
