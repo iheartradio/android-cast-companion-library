@@ -1,6 +1,8 @@
-androidGradlePlugin         = 'com.android.tools.build:gradle:0.12.+'
-androidSdkManager           = 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
-androidBuildToolsVersion    = '20.0.0'
+ext {
+    androidGradlePlugin         = 'com.android.tools.build:gradle:0.12.+'
+    androidSdkManager           = 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
+    androidBuildToolsVersion    = '20.0.0'
+}
 
 apply plugin: 'idea'
 
@@ -144,16 +146,5 @@ publishing {
                 password artifactoryPassword
             }
         }
-    }
-}
-
-project.afterEvaluate {
-    publishing.publications.all { publication ->
-        final String publishTaskName = String.format("publish%sPublicationToMavenLocal", publication.name.capitalize());
-        final String assembleTaskName = String.format("assemble%s", publication.name.capitalize());
-
-        // Add dependency between publish task and assemble task for each publication
-        Task publishTask = project.tasks.getByName(publishTaskName)
-        publishTask.dependsOn project.tasks.getByName(assembleTaskName)
     }
 }
