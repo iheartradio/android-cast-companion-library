@@ -16,20 +16,6 @@
 
 package com.google.android.libraries.cast.companionlibrary.cast.dialog.video;
 
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
-
-import com.google.android.gms.cast.MediaInfo;
-import com.google.android.gms.cast.MediaMetadata;
-import com.google.android.gms.cast.MediaStatus;
-import com.google.android.libraries.cast.companionlibrary.R;
-import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
-import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastException;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
-import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
-import com.google.android.libraries.cast.companionlibrary.utils.FetchBitmapTask;
-import com.google.android.libraries.cast.companionlibrary.utils.LogUtils;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -43,6 +29,20 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.cast.MediaInfo;
+import com.google.android.gms.cast.MediaMetadata;
+import com.google.android.gms.cast.MediaStatus;
+import com.google.android.libraries.cast.companionlibrary.R;
+import com.google.android.libraries.cast.companionlibrary.cast.VideoCastManager;
+import com.google.android.libraries.cast.companionlibrary.cast.callbacks.VideoCastConsumerImpl;
+import com.google.android.libraries.cast.companionlibrary.cast.exceptions.CastException;
+import com.google.android.libraries.cast.companionlibrary.cast.exceptions.NoConnectionException;
+import com.google.android.libraries.cast.companionlibrary.cast.exceptions.TransientNetworkDisconnectionException;
+import com.google.android.libraries.cast.companionlibrary.utils.FetchBitmapTask;
+import com.google.android.libraries.cast.companionlibrary.utils.LogUtils;
+
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
+
 /**
  * A custom {@link MediaRouteControllerDialog} that provides an album art, a play/pause button and
  * the ability to take user to the target activity when the album art is tapped.
@@ -50,7 +50,7 @@ import android.widget.TextView;
 public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog {
 
     private static final String TAG =
-            LogUtils.makeLogTag(VideoMediaRouteControllerDialog.class);
+            LogUtils.makeLogTag(com.google.android.libraries.cast.companionlibrary.cast.dialog.video.VideoMediaRouteControllerDialog.class);
 
     private ImageView mIcon;
     private ImageView mPausePlay;
@@ -80,7 +80,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
      * Creates a new VideoMediaRouteControllerDialog with the given context.
      */
     public VideoMediaRouteControllerDialog(Context context) {
-        super(context, R.style.CCLCastDialog);
+        super(context, com.google.android.libraries.cast.companionlibrary.R.style.CCLCastDialog);
         try {
             this.mContext = context;
             mCastManager = VideoCastManager.getInstance();
@@ -106,12 +106,18 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
 
             };
             mCastManager.addVideoCastConsumer(mCastConsumerImpl);
-            mPauseDrawable = context.getResources().getDrawable(R.drawable.ic_av_pause_sm_dark);
-            mPlayDrawable = context.getResources().getDrawable(R.drawable.ic_av_play_sm_dark);
-            mStopDrawable = context.getResources().getDrawable(R.drawable.ic_av_stop_sm_dark);
+            mPauseDrawable = context.getResources().getDrawable(com.google.android.libraries.cast.companionlibrary.R.drawable.ic_av_pause_sm_dark);
+            mPlayDrawable = context.getResources().getDrawable(com.google.android.libraries.cast.companionlibrary.R.drawable.ic_av_play_sm_dark);
+            mStopDrawable = context.getResources().getDrawable(com.google.android.libraries.cast.companionlibrary.R.drawable.ic_av_stop_sm_dark);
+
         } catch (IllegalStateException e) {
             LOGE(TAG, "Failed to update the content of dialog", e);
         }
+    }
+
+    @Override
+    public void setContentView(int layoutResID) {
+        super.setContentView(R.layout.custom_media_route_controller_controls_dialog_frame);
     }
 
     @Override
@@ -135,7 +141,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         mIcon.setVisibility(visibility);
         mIconContainer.setVisibility(visibility);
         mTextContainer.setVisibility(visibility);
-        mEmptyText.setText(resId == 0 ? R.string.ccl_no_media_info : resId);
+        mEmptyText.setText(resId == 0 ? com.google.android.libraries.cast.companionlibrary.R.string.ccl_no_media_info : resId);
         mEmptyText.setVisibility(hide ? View.VISIBLE : View.GONE);
         if (hide) {
             mPausePlay.setVisibility(visibility);
@@ -147,11 +153,11 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         try {
             info = mCastManager.getRemoteMediaInformation();
         } catch (TransientNetworkDisconnectionException | NoConnectionException e) {
-            hideControls(true, R.string.ccl_failed_no_connection_short);
+            hideControls(true, com.google.android.libraries.cast.companionlibrary.R.string.ccl_failed_no_connection_short);
             return;
         }
         if (info == null) {
-            hideControls(true, R.string.ccl_no_media_info);
+            hideControls(true, com.google.android.libraries.cast.companionlibrary.R.string.ccl_no_media_info);
             return;
         }
         mStreamType = info.getStreamType();
@@ -169,7 +175,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         mIconUri = uri;
         if (uri == null) {
             Bitmap bm = BitmapFactory.decodeResource(
-                    mContext.getResources(), R.drawable.album_art_placeholder);
+                    mContext.getResources(), com.google.android.libraries.cast.companionlibrary.R.drawable.album_art_placeholder);
             mIcon.setImageBitmap(bm);
             return;
         }
@@ -207,7 +213,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
 
                     if (mState == MediaStatus.PLAYER_STATE_IDLE
                             && mCastManager.getIdleReason() == MediaStatus.IDLE_REASON_FINISHED) {
-                        hideControls(true, R.string.ccl_no_media_info);
+                        hideControls(true, com.google.android.libraries.cast.companionlibrary.R.string.ccl_no_media_info);
                     } else {
                         switch (mStreamType) {
                             case MediaInfo.STREAM_TYPE_BUFFERED:
@@ -264,7 +270,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
     @Override
     public View onCreateMediaControlView(Bundle savedInstanceState) {
         LayoutInflater inflater = getLayoutInflater();
-        View controls = inflater.inflate(R.layout.custom_media_route_controller_controls_dialog,
+        View controls = inflater.inflate(com.google.android.libraries.cast.companionlibrary.R.layout.custom_media_route_controller_controls_dialog,
                 null);
 
         loadViews(controls);
@@ -329,13 +335,13 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
     }
 
     private void loadViews(View controls) {
-        mIcon = (ImageView) controls.findViewById(R.id.iconView);
-        mIconContainer = controls.findViewById(R.id.iconContainer);
-        mTextContainer = controls.findViewById(R.id.textContainer);
-        mPausePlay = (ImageView) controls.findViewById(R.id.playPauseView);
-        mTitle = (TextView) controls.findViewById(R.id.titleView);
-        mSubTitle = (TextView) controls.findViewById(R.id.subTitleView);
-        mLoading = (ProgressBar) controls.findViewById(R.id.loadingView);
-        mEmptyText = (TextView) controls.findViewById(R.id.emptyView);
+        mIcon = (ImageView) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.iconView);
+        mIconContainer = controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.iconContainer);
+        mTextContainer = controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.textContainer);
+        mPausePlay = (ImageView) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.playPauseView);
+        mTitle = (TextView) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.titleView);
+        mSubTitle = (TextView) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.subTitleView);
+        mLoading = (ProgressBar) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.loadingView);
+        mEmptyText = (TextView) controls.findViewById(com.google.android.libraries.cast.companionlibrary.R.id.emptyView);
     }
 }
