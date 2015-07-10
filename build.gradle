@@ -1,7 +1,7 @@
 ext {
     androidGradlePlugin         = 'com.android.tools.build:gradle:0.12.+'
     androidSdkManager           = 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
-    androidBuildToolsVersion    = '20.0.0'
+    androidBuildToolsVersion    = '22.0.1'
 }
 
 apply plugin: 'idea'
@@ -87,10 +87,10 @@ apply plugin: 'maven-publish'
 project.buildDir = 'gradle-build'
 
 group 'com.google'
-version '1.6.0.ihr'
+version '1.6.2.ihr'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion androidBuildToolsVersion
 
     defaultConfig {
