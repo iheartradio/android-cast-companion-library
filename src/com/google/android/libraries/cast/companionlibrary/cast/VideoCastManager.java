@@ -222,12 +222,16 @@ public class VideoCastManager extends BaseCastManager
         super(context, applicationId);
         LOGD(TAG, "VideoCastManager is instantiated");
         mDataNamespace = dataNamespace;
-        if (targetActivity == null) {
-            targetActivity = VideoCastControllerActivity.class;
-        }
+
+        // to prevent from app crashing
+//        if (targetActivity == null) {
+//            targetActivity = VideoCastControllerActivity.class;
+//        }
         mTargetActivity = targetActivity;
-        mPreferenceAccessor.saveStringToPreference(PREFS_KEY_CAST_ACTIVITY_NAME,
-                mTargetActivity.getName());
+        if (mTargetActivity != null) {
+            mPreferenceAccessor.saveStringToPreference(PREFS_KEY_CAST_ACTIVITY_NAME,
+                    mTargetActivity.getName());
+        }
         if (!TextUtils.isEmpty(mDataNamespace)) {
             mPreferenceAccessor.saveStringToPreference(PREFS_KEY_CAST_CUSTOM_DATA_NAMESPACE,
                     dataNamespace);
@@ -343,9 +347,11 @@ public class VideoCastManager extends BaseCastManager
     @Override
     public void onTargetActivityInvoked(Context context) throws
             TransientNetworkDisconnectionException, NoConnectionException {
-        Intent intent = new Intent(context, mTargetActivity);
-        intent.putExtra(EXTRA_MEDIA, Utils.mediaInfoToBundle(getRemoteMediaInformation()));
-        context.startActivity(intent);
+        if (mTargetActivity != null) {
+            Intent intent = new Intent(context, mTargetActivity);
+            intent.putExtra(EXTRA_MEDIA, Utils.mediaInfoToBundle(getRemoteMediaInformation()));
+            context.startActivity(intent);
+        }
     }
 
     @Override
