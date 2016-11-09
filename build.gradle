@@ -1,7 +1,7 @@
 ext {
     androidGradlePlugin         = 'com.android.tools.build:gradle:0.12.+'
     androidSdkManager           = 'com.jakewharton.sdkmanager:gradle-plugin:0.12.+'
-    androidBuildToolsVersion    = '23.0.2'
+    androidBuildToolsVersion    = '25.0.0'
 }
 
 apply plugin: 'idea'
@@ -85,10 +85,10 @@ apply plugin: 'android-library'
 apply plugin: 'maven-publish'
 
 group 'com.google'
-version '2.5.2.ihr'
+version '2.5.3.ihr'
 
 android {
-    compileSdkVersion 22
+    compileSdkVersion 25
     buildToolsVersion androidBuildToolsVersion
     publishNonDefault true
 
@@ -109,9 +109,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.+'
-    compile 'com.android.support:mediarouter-v7:22.2.+'
-    compile 'com.google.android.gms:play-services-cast:8.1.+'
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:mediarouter-v7:25.0.0'
+    compile 'com.google.android.gms:play-services-cast:9.8.0'
 }
 
 task sourceJar(type: Jar) {
