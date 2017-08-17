@@ -18,6 +18,9 @@ package com.google.android.libraries.cast.companionlibrary.cast.dialog.video;
 
 import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGE;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import com.google.android.gms.cast.MediaInfo;
 import com.google.android.gms.cast.MediaMetadata;
 import com.google.android.gms.cast.MediaStatus;
@@ -32,7 +35,6 @@ import com.google.android.libraries.cast.companionlibrary.utils.LogUtils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -42,6 +44,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A custom {@link MediaRouteControllerDialog} that provides an album art, a play/pause button and
@@ -51,6 +55,17 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
 
     private static final String TAG =
             LogUtils.makeLogTag(VideoMediaRouteControllerDialog.class);
+
+    public static final String ICON_BASE_URL = "http://i.iheart.com/v3/catalog/";
+    public static final String KEY_METADATA = "metadata";
+    public static final String KEY_STATION_TYPE = "stationType";
+    public static final String KEY_STATION_ID = "stationId";
+    public static final String KEY_ARTIST_ID = "artistId";
+    public static final String STATION_TYPE_PODCAST = "podcast";
+    public static final String STATION_TYPE_CUSTOM_STATION = "custom";
+    public static final String ICON_TYPE_PODCAST = "show";
+    public static final String ICON_TYPE_ARTIST = "artist";
+    public static final String ICON_TYPE_LIVE = "live";
 
     private ImageView mIcon;
     private ImageView mPausePlay;
@@ -161,8 +176,51 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
         hideControls(false, 0);
         MediaMetadata mm = info.getMetadata();
         mTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
-        mSubTitle.setText(mm.getString(MediaMetadata.KEY_SUBTITLE));
-        setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : null);
+
+        final String subtitle = TextUtils.isEmpty(mm.getString(MediaMetadata.KEY_SUBTITLE)) ?
+                                mm.getString(MediaMetadata.KEY_ARTIST) :
+                                mm.getString(MediaMetadata.KEY_SUBTITLE);
+        mSubTitle.setText(subtitle);
+
+        setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : getImagePath(info.getCustomData()));
+    }
+
+    @Nullable
+    private Uri getImagePath(@Nullable final JSONObject customData) {
+        if (customData != null) {
+            if (customData.has(KEY_METADATA)) {
+                try {
+                    final JSONObject metadata = customData.getJSONObject(KEY_METADATA);
+
+                    if (metadata.has(KEY_STATION_TYPE)) {
+                        final String stationType = metadata.getString(KEY_STATION_TYPE);
+
+                        if (STATION_TYPE_PODCAST.equals(stationType)) {
+                            return getImagePath(ICON_TYPE_PODCAST, metadata.getLong(KEY_STATION_ID));
+                        } else if (STATION_TYPE_CUSTOM_STATION.equals(stationType)) {
+                            return getImagePath(ICON_TYPE_ARTIST, metadata.getLong(KEY_ARTIST_ID));
+                        } else {
+                            return getImagePath(ICON_TYPE_LIVE, metadata.getLong(KEY_STATION_ID));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @NonNull
+    private Uri getImagePath(@NonNull final String type, final long id) {
+        final String uriString = new StringBuilder(ICON_BASE_URL)
+                .append(type)
+                .append("/")
+                .append(id)
+                .toString();
+
+        return Uri.parse(uriString);
     }
 
     public void setIcon(Uri uri) {
@@ -170,12 +228,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
             return;
         }
         mIconUri = uri;
-        if (uri == null) {
-            Bitmap bm = BitmapFactory.decodeResource(
-                    mContext.getResources(), R.drawable.album_art_placeholder);
-            mIcon.setImageBitmap(bm);
-            return;
-        }
+
         if (mFetchBitmap != null) {
             mFetchBitmap.cancel(true);
         }

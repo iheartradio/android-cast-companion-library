@@ -17,16 +17,16 @@
 <resources>
 
     <!-- Custom Media Router Dialog -->
-    <color name="ccl_mr_custom_line_1">#FFFFFF</color>
-    <color name="ccl_mr_custom_line_2">#AAFFFFFF</color>
+    <color name="ccl_mr_custom_line_1">#333333</color>
+    <color name="ccl_mr_custom_line_2">#333333</color>
     <color name="ccl_mr_custom_title">#33b5e5</color>
 
     <!-- VideoCastControllerActivity/Fragment -->
-    <color name="ccl_cast_activity_progress_text_color">#E5FFFFFF</color>
-    <color name="ccl_cast_activity_line1_text_color">#E5FFFFFF</color>
+    <color name="ccl_cast_activity_progress_text_color">#333333</color>
+    <color name="ccl_cast_activity_line1_text_color">#333333</color>
     <color name="ccl_cast_activity_line2_text_color">#E5AAAAAA</color>
     <color name="ccl_cast_activity_background_color">#000000</color>
-    <color name="ccl_cast_activity_text_color">#FFFFFF</color>
+    <color name="ccl_cast_activity_text_color">#333333</color>
 
     <color name="ccl_blue">#4285f4</color>
     <color name="ccl_grey600">#555753</color>

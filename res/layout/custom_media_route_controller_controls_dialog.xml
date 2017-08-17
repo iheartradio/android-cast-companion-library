@@ -22,7 +22,9 @@
         android:id="@+id/iconContainer"
         android:layout_width="68dp"
         android:layout_height="68dp"
-        android:layout_alignParentLeft="true">
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="9dp"
+        android:layout_marginRight="9dp">
 
         <ImageView
             android:id="@+id/iconView"
@@ -30,8 +32,7 @@
             android:layout_height="wrap_content"
             android:adjustViewBounds="false"
             android:cropToPadding="false"
-            android:scaleType="centerCrop"
-            android:src="@drawable/album_art_placeholder"/>
+            android:scaleType="centerCrop"/>
 
     </RelativeLayout>
 
@@ -41,8 +42,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="9dp"
         android:layout_marginRight="9dp"
-        android:src="@drawable/ic_av_pause_sm_dark"/>
+        android:src="@drawable/ic_av_pause_light"/>
 
     <ProgressBar
         android:id="@+id/loadingView"
@@ -92,7 +94,7 @@
             android:layout_toLeftOf="@+id/playPauseView"
             android:layout_toRightOf="@+id/iconContainer"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:textColor="@color/ccl_mr_custom_line_2"
             android:textSize="13sp"/>
     </LinearLayout>

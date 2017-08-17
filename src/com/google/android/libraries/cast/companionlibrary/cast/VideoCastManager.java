@@ -1681,18 +1681,23 @@ public class VideoCastManager extends BaseCastManager
             LOGE(TAG, "Trying to pause a video with no active media session");
             throw new NoConnectionException();
         }
-        mRemoteMediaPlayer.pause(mApiClient, customData)
-                .setResultCallback(new ResultCallback<MediaChannelResult>() {
 
-                    @Override
-                    public void onResult(MediaChannelResult result) {
-                        if (!result.getStatus().isSuccess()) {
-                            onFailed(R.string.ccl_failed_to_pause,
-                                    result.getStatus().getStatusCode());
-                        }
-                    }
+        try {
+            mRemoteMediaPlayer.pause(mApiClient, customData)
+                              .setResultCallback(new ResultCallback<MediaChannelResult>() {
+                                  @Override
+                                  public void onResult(MediaChannelResult result) {
+                                      if (!result.getStatus().isSuccess()) {
+                                          onFailed(R.string.ccl_failed_to_pause,
+                                                   result.getStatus().getStatusCode());
+                                      }
+                                  }
 
-                });
+                              });
+        } catch (IllegalStateException e) {
+            LOGE(TAG, "pause()", e);
+        }
+
     }
 
     /**
