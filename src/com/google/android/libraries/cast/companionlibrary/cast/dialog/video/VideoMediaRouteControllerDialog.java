@@ -63,6 +63,7 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
     public static final String KEY_ARTIST_ID = "artistId";
     public static final String STATION_TYPE_PODCAST = "podcast";
     public static final String STATION_TYPE_CUSTOM_STATION = "custom";
+    public static final String STATION_TYPE_PLAYLIST = "playlist";
     public static final String ICON_TYPE_PODCAST = "show";
     public static final String ICON_TYPE_ARTIST = "artist";
     public static final String ICON_TYPE_LIVE = "live";
@@ -197,7 +198,8 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
 
                         if (STATION_TYPE_PODCAST.equals(stationType)) {
                             return getImagePath(ICON_TYPE_PODCAST, metadata.getLong(KEY_STATION_ID));
-                        } else if (STATION_TYPE_CUSTOM_STATION.equals(stationType)) {
+                        } else if (STATION_TYPE_CUSTOM_STATION.equals(stationType)
+                                || (STATION_TYPE_PLAYLIST.equals(stationType))) {
                             return getImagePath(ICON_TYPE_ARTIST, metadata.getLong(KEY_ARTIST_ID));
                         } else {
                             return getImagePath(ICON_TYPE_LIVE, metadata.getLong(KEY_STATION_ID));
