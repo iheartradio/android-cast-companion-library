@@ -2045,7 +2045,11 @@ public class VideoCastManager extends BaseCastManager
         }
         if (queueItems != null && !queueItems.isEmpty()) {
             for (MediaQueueItem item : queueItems) {
-                LOGD(TAG, "[queue] Queue Item is: " + item.toJson());
+                if (item != null) {
+                    LOGD(TAG, "[queue] Queue Item is: " + item.toJson());
+                } else {
+                    LOGD(TAG, "[queue] Queue Item is: null");
+                }
             }
         }
         mState = mMediaStatus.getPlayerState();
