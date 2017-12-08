@@ -2043,6 +2043,10 @@ public class VideoCastManager extends BaseCastManager
         } else {
             onQueueUpdated(null, null, MediaStatus.REPEAT_MODE_REPEAT_OFF, false);
         }
+
+        /**********************************************************
+         * Doesn't make sense to log when there's crash internally
+         *
         if (queueItems != null && !queueItems.isEmpty()) {
             for (MediaQueueItem item : queueItems) {
                 if (item != null) {
@@ -2052,6 +2056,9 @@ public class VideoCastManager extends BaseCastManager
                 }
             }
         }
+         *******************************************************/
+
+
         mState = mMediaStatus.getPlayerState();
         mIdleReason = mMediaStatus.getIdleReason();
 
