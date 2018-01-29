@@ -85,7 +85,7 @@ apply plugin: 'android-library'
 apply plugin: 'maven-publish'
 
 group 'com.google'
-version '2.5.7.ihr'
+version '2.5.8.ihr'
 
 android {
     compileSdkVersion 25

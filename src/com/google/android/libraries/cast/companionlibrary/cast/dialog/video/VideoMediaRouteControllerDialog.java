@@ -169,21 +169,28 @@ public class VideoMediaRouteControllerDialog extends MediaRouteControllerDialog 
             hideControls(true, R.string.ccl_failed_no_connection_short);
             return;
         }
-        if (info == null) {
-            hideControls(true, R.string.ccl_no_media_info);
-            return;
+        if (info != null) {
+            mStreamType = info.getStreamType();
+
+            MediaMetadata mm = info.getMetadata();
+
+            if (mm != null) {
+                hideControls(false, 0);
+
+                mTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
+
+                final String subtitle = TextUtils.isEmpty(mm.getString(MediaMetadata.KEY_SUBTITLE)) ?
+                        mm.getString(MediaMetadata.KEY_ARTIST) :
+                        mm.getString(MediaMetadata.KEY_SUBTITLE);
+                mSubTitle.setText(subtitle);
+
+                setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : getImagePath(info.getCustomData()));
+
+                return;
+            }
         }
-        mStreamType = info.getStreamType();
-        hideControls(false, 0);
-        MediaMetadata mm = info.getMetadata();
-        mTitle.setText(mm.getString(MediaMetadata.KEY_TITLE));
 
-        final String subtitle = TextUtils.isEmpty(mm.getString(MediaMetadata.KEY_SUBTITLE)) ?
-                                mm.getString(MediaMetadata.KEY_ARTIST) :
-                                mm.getString(MediaMetadata.KEY_SUBTITLE);
-        mSubTitle.setText(subtitle);
-
-        setIcon(mm.hasImages() ? mm.getImages().get(0).getUrl() : getImagePath(info.getCustomData()));
+        hideControls(true, R.string.ccl_no_media_info);
     }
 
     @Nullable
