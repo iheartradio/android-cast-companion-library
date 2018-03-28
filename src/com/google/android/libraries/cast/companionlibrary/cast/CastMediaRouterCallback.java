@@ -16,13 +16,13 @@
 
 package com.google.android.libraries.cast.companionlibrary.cast;
 
-import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
+import android.support.v7.media.MediaRouter;
+import android.support.v7.media.MediaRouter.RouteInfo;
 
 import com.google.android.gms.cast.CastDevice;
 import com.google.android.libraries.cast.companionlibrary.utils.LogUtils;
 
-import android.support.v7.media.MediaRouter;
-import android.support.v7.media.MediaRouter.RouteInfo;
+import static com.google.android.libraries.cast.companionlibrary.utils.LogUtils.LOGD;
 
 /**
  * Provides a handy implementation of {@link MediaRouter.Callback}. When a {@link RouteInfo} is
@@ -38,12 +38,18 @@ public class CastMediaRouterCallback extends MediaRouter.Callback {
     private final BaseCastManager mCastManager;
     private boolean mRouteAvailable = false;
 
+    private static final String IHEARTRADIO = "iheartradio";
+
     public CastMediaRouterCallback(BaseCastManager castManager) {
         mCastManager = castManager;
     }
 
     @Override
     public void onRouteSelected(MediaRouter router, RouteInfo info) {
+        if (info.getProvider().getPackageName().contains(IHEARTRADIO)) {
+            return;
+        }
+
         LOGD(TAG, "onRouteSelected: info=" + info);
         if (mCastManager.getReconnectionStatus()
                 == BaseCastManager.RECONNECTION_STATUS_FINALIZED) {
@@ -60,12 +66,19 @@ public class CastMediaRouterCallback extends MediaRouter.Callback {
 
     @Override
     public void onRouteUnselected(MediaRouter router, RouteInfo route) {
+        if (route.getProvider().getPackageName().contains(IHEARTRADIO)) {
+            return;
+        }
         LOGD(TAG, "onRouteUnselected: route=" + route);
         mCastManager.onDeviceSelected(null);
     }
 
     @Override
     public void onRouteAdded(MediaRouter router, RouteInfo route) {
+        if (route.getProvider().getPackageName().contains(IHEARTRADIO)) {
+            return;
+        }
+
         if (!router.getDefaultRoute().equals(route)) {
             notifyRouteAvailabilityChangedIfNeeded(router);
             mCastManager.onCastDeviceDetected(route);
